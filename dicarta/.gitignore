@@ -1,0 +1,34 @@
+# Ignorar arquivos de build
+/target/
+*.class
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos de configuração do sistema
+*.iml
+.idea/
+*.ipr
+*.iws
+*.bak
+
+# Ignorar arquivos do Eclipse
+*.classpath
+*.project
+*.settings/
+
+# Ignorar arquivos do NetBeans
+/nbproject/private/
+/build/
+/dist/
+
+# Ignorar arquivos do VS Code
+.vscode/
+
+# Ignorar configurações locais
+*.env
+application.properties
+
+# Ignorar arquivos de sistema operacional
+.DS_Store
+Thumbs.db
