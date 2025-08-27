@@ -16,10 +16,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version> <!-- Adicionando a versão -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.boot.version}</version> <!-- Adicionando a versão -->
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -35,6 +37,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
+            <version>${spring.boot.version}</version> <!-- Adicionando a versão -->
         </dependency>
         <dependency>
             <groupId>jakarta.persistence</groupId>
@@ -51,6 +54,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <version>${spring.boot.version}</version> <!-- Adicionando a versão -->
         </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>
