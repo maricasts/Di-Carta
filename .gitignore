@@ -1,0 +1,3 @@
+#Ignorar arquivo com senha
+*.application.properties
+*application
