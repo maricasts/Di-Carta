@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Livros - Dicarta Livraria{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2><i class="fas fa-book me-2"></i>Gerenciar Livros</h2>
+                        <p class="mb-0">Adicione, edite e remova livros do catálogo.</p>
+                    </div>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBookModal">
+                        <i class="fas fa-plus me-2"></i>Adicionar Livro
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Books Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    {% if books %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Título</th>
+                                        <th>Autor</th>
+                                        <th>Editora</th>
+                                        <th>Ano</th>
+                                        <th>Gênero</th>
+                                        <th>Preço</th>
+                                        <th>Estoque</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for book in books %}
+                                    <tr>
+                                        <td>{{ book.id }}</td>
+                                        <td>{{ book.titulo }}</td>
+                                        <td>{{ book.autor }}</td>
+                                        <td>{{ book.editora or '-' }}</td>
+                                        <td>{{ book.ano or '-' }}</td>
+                                        <td>{{ book.genero or '-' }}</td>
+                                        <td>R$ {{ "%.2f"|format(book.preco) }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if book.estoque > 10 %}success{% elif book.estoque > 0 %}warning{% else %}danger{% endif %}">
+                                                {{ book.estoque }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1" 
+                                                    onclick="editBook({{ book.id }}, '{{ book.titulo }}', '{{ book.autor }}', '{{ book.editora or '' }}', {{ book.ano or 'null' }}, '{{ book.genero or '' }}', {{ book.preco }}, {{ book.estoque }})"
+                                                    data-bs-toggle="modal" data-bs-target="#editBookModal">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}" class="d-inline" onsubmit="return confirm('Confirma a exclusão deste livro?')">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-book-open fa-4x text-muted mb-3"></i>
+                            <h4>Nenhum livro cadastrado</h4>
+                            <p class="text-muted">Comece adicionando o primeiro livro ao catálogo.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Book Modal -->
+<div class="modal fade" id="addBookModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('add_book') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Adicionar Novo Livro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="titulo" class="form-label">Título *</label>
+                            <input type="text" class="form-control" name="titulo" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="autor" class="form-label">Autor *</label>
+                            <input type="text" class="form-control" name="autor" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="editora" class="form-label">Editora</label>
+                            <input type="text" class="form-control" name="editora">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="ano" class="form-label">Ano</label>
+                            <input type="number" class="form-control" name="ano" min="1000" max="2100">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="genero" class="form-label">Gênero</label>
+                            <input type="text" class="form-control" name="genero">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="preco" class="form-label">Preço (R$) *</label>
+                            <input type="number" step="0.01" min="0" class="form-control" name="preco" required>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="estoque" class="form-label">Quantidade em Estoque</label>
+                            <input type="number" min="0" class="form-control" name="estoque" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save me-2"></i>Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Book Modal -->
+<div class="modal fade" id="editBookModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="POST" id="editBookForm">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Editar Livro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_titulo" class="form-label">Título *</label>
+                            <input type="text" class="form-control" name="titulo" id="edit_titulo" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_autor" class="form-label">Autor *</label>
+                            <input type="text" class="form-control" name="autor" id="edit_autor" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_editora" class="form-label">Editora</label>
+                            <input type="text" class="form-control" name="editora" id="edit_editora">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_ano" class="form-label">Ano</label>
+                            <input type="number" class="form-control" name="ano" id="edit_ano" min="1000" max="2100">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_genero" class="form-label">Gênero</label>
+                            <input type="text" class="form-control" name="genero" id="edit_genero">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_preco" class="form-label">Preço (R$) *</label>
+                            <input type="number" step="0.01" min="0" class="form-control" name="preco" id="edit_preco" required>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="edit_estoque" class="form-label">Quantidade em Estoque</label>
+                            <input type="number" min="0" class="form-control" name="estoque" id="edit_estoque">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Atualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

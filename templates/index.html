@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Bem-vindo - Dicarta Livraria{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <div class="hero-section mb-5">
+                <i class="fas fa-book-open fa-4x text-primary mb-3"></i>
+                <h1 class="display-4 mb-4">Bem-vindo à Dicarta Livraria</h1>
+                <p class="lead mb-5">Sua livraria digital completa com sistema de gestão integrado</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-user fa-3x text-primary mb-3"></i>
+                            <h3 class="card-title">Sou Cliente</h3>
+                            <p class="card-text">Explore nosso catálogo de livros, faça suas compras e gerencie seus pedidos.</p>
+                            <div class="d-grid gap-2">
+                                <a href="{{ url_for('cliente_register') }}" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i>Cadastrar-se
+                                </a>
+                                <small class="text-muted">Já tem conta? Entre no sistema</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card h-100 border-warning">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-user-tie fa-3x text-warning mb-3"></i>
+                            <h3 class="card-title">Sou Técnico</h3>
+                            <p class="card-text">Gerencie o catálogo de livros, controle estoque e administre ordens de serviço.</p>
+                            <div class="d-grid gap-2">
+                                <a href="{{ url_for('tecnico_register') }}" class="btn btn-warning btn-lg">
+                                    <i class="fas fa-user-cog me-2"></i>Cadastrar-se
+                                </a>
+                                <small class="text-muted">Já tem conta? Entre no sistema</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <div class="row mt-5 pt-5">
+        <div class="col-12">
+            <h2 class="text-center mb-5">Recursos da Plataforma</h2>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <i class="fas fa-shopping-cart fa-2x text-info mb-3"></i>
+            <h5>Compras Online</h5>
+            <p class="text-muted">Sistema completo de carrinho de compras para clientes</p>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <i class="fas fa-warehouse fa-2x text-success mb-3"></i>
+            <h5>Controle de Estoque</h5>
+            <p class="text-muted">Gestão completa do inventário de livros</p>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <i class="fas fa-chart-bar fa-2x text-warning mb-3"></i>
+            <h5>Relatórios</h5>
+            <p class="text-muted">Acompanhe vendas e estatísticas em tempo real</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

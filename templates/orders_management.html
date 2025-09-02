@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Ordens de Serviço - Dicarta Livraria{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2><i class="fas fa-clipboard-list me-2"></i>Gerenciar Ordens de Serviço</h2>
+                        <p class="mb-0">Crie e acompanhe ordens de serviço da livraria.</p>
+                    </div>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addOrderModal">
+                        <i class="fas fa-plus me-2"></i>Nova Ordem de Serviço
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    {% if orders %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Descrição</th>
+                                        <th>Status</th>
+                                        <th>Data Abertura</th>
+                                        <th>Data Fechamento</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                    <tr>
+                                        <td>{{ order.id }}</td>
+                                        <td>{{ order.descricao[:50] }}{% if order.descricao|length > 50 %}...{% endif %}</td>
+                                        <td>
+                                            <span class="badge bg-{% if order.status == 'ABERTA' %}warning{% elif order.status == 'FECHADA' %}success{% else %}secondary{% endif %}">
+                                                {{ order.status }}
+                                            </span>
+                                        </td>
+                                        <td>{{ order.dataAbertura }}</td>
+                                        <td>{{ order.dataFechamento or '-' }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    onclick="editOrder({{ order.id }}, '{{ order.descricao }}', '{{ order.status }}', '{{ order.dataFechamento or '' }}')"
+                                                    data-bs-toggle="modal" data-bs-target="#editOrderModal">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-clipboard-list fa-4x text-muted mb-3"></i>
+                            <h4>Nenhuma ordem de serviço</h4>
+                            <p class="text-muted">Crie a primeira ordem de serviço da livraria.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Order Modal -->
+<div class="modal fade" id="addOrderModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('add_order') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Nova Ordem de Serviço</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição *</label>
+                        <textarea class="form-control" name="descricao" rows="4" required 
+                                  placeholder="Descreva detalhadamente o serviço a ser realizado..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save me-2"></i>Criar OS
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Order Modal -->
+<div class="modal fade" id="editOrderModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" id="editOrderForm">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Editar Ordem de Serviço</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit_descricao" class="form-label">Descrição *</label>
+                        <textarea class="form-control" name="descricao" id="edit_descricao" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_status" class="form-label">Status *</label>
+                        <select class="form-select" name="status" id="edit_status" required>
+                            <option value="ABERTA">Aberta</option>
+                            <option value="EM_ANDAMENTO">Em Andamento</option>
+                            <option value="FECHADA">Fechada</option>
+                            <option value="CANCELADA">Cancelada</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_dataFechamento" class="form-label">Data de Fechamento</label>
+                        <input type="date" class="form-control" name="dataFechamento" id="edit_dataFechamento">
+                        <div class="form-text">Deixe em branco se a OS ainda estiver aberta</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Atualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

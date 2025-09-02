@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Carrinho de Compras - Dicarta Livraria{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2><i class="fas fa-shopping-cart me-2"></i>Carrinho de Compras</h2>
+                    <p class="mb-0">Revise seus itens antes de finalizar a compra.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if cart_items %}
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Itens no Carrinho ({{ cart_items|length }})</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        {% for item in cart_items %}
+                        <div class="p-3 border-bottom">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h6 class="mb-1">{{ item.titulo }}</h6>
+                                    <small class="text-muted">{{ item.autor }}</small>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <span class="badge bg-primary">Qtd: {{ item.quantity }}</span>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <strong>R$ {{ "%.2f"|format(item.preco) }}</strong>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <a href="{{ url_for('remove_from_cart', book_id=item.id) }}" 
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('Remover este item do carrinho?')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Resumo do Pedido</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <strong>R$ {{ "%.2f"|format(total) }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Frete:</span>
+                            <strong>R$ 0,00</strong>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Total:</strong>
+                            <strong class="text-success">R$ {{ "%.2f"|format(total) }}</strong>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success btn-lg" onclick="alert('Funcionalidade de pagamento será implementada em breve!')">
+                                <i class="fas fa-credit-card me-2"></i>Finalizar Compra
+                            </button>
+                            <a href="{{ url_for('books_catalog') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i>Continuar Comprando
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Info -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">Informações do Cliente</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>{{ session.user_name }}</strong></p>
+                        <small class="text-muted">Cliente ID: {{ session.user_id }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Empty Cart -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+                        <h4>Seu carrinho está vazio</h4>
+                        <p class="text-muted mb-4">Que tal explorar nosso catálogo e encontrar livros incríveis?</p>
+                        <a href="{{ url_for('books_catalog') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-book me-2"></i>Explorar Catálogo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
