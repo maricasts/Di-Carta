@@ -38,7 +38,7 @@
 |---------------------------|----------------------------------|---------------|
 | [Reunião Geral 1](./time-documents/Reuni%C3%A3o%20geraL%201.pdf) | Ata da primeira reunião geral da equipe | Agosto 2025 |
 | [Reunião Geral 2](./time-documents/Reuni%C3%A3o%20geraL%202.pdf) | Ata da segunda reunião geral da equipe | Agosto 2025 |
-| [Apresentação](./https://www.canva.com/design/DAGx0wqJq2Q/C_HJEMBcoA_PQKiiPTOdfQ/edit?utm_content=DAGx0wqJq2Q&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | Apresentação de slides da dupla | Setembro 2025 |
+| [Apresentação](/https://www.canva.com/design/DAGx0wqJq2Q/C_HJEMBcoA_PQKiiPTOdfQ/edit?utm_content=DAGx0wqJq2Q&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | Apresentação de slides da dupla | Setembro 2025 |
 
 
 ## Ferramentas usadas
